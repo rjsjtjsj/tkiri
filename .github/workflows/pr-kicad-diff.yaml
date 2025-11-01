@@ -10,7 +10,7 @@ concurrency:
 
 on:
   pull_request:
-    branches: [ kiri]
+    branches: [ kiri ]
     types:
     - opened
     - synchronize
@@ -61,10 +61,12 @@ jobs:
         cp -r ./diff/* gh-pages/pr-previews/${{ github.event.pull_request.number }}/
 
 
-
     - name: Deploy diff to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GH_PAT }}
         publish_branch: gh-pages
         publish_dir: ./diff/
+
+
+
