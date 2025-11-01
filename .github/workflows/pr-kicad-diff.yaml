@@ -26,6 +26,12 @@ jobs:
       uses: hacker-fab/kiri-github-action@v2.0.5
       with:
         project-file: kicad/productname.kicad_pro
+    
+    - name: Check diff directory
+      run: |
+        echo "Listing ./diff/ directory..."
+        ls -R ./_KIRI_/
+
 
     - name: Deploy diff to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
