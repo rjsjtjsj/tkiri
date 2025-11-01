@@ -23,7 +23,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.sha }}
 
     - name: Create diff folder
-      run: mkdir -p ./diff
+      run: mkdir -p ./diff/
         
     - name: Kiri
       uses: hacker-fab/kiri-github-action@v2.0.5
