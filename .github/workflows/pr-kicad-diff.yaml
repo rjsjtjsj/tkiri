@@ -16,7 +16,6 @@ on:
     - opened
     - synchronize
 
-
 jobs:
   kiri-diff:
     runs-on: ubuntu-latest
