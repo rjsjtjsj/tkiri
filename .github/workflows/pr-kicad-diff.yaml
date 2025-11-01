@@ -55,5 +55,5 @@ jobs:
         github_token: ${{ secrets.GH_PAT }}
         publish_branch: gh-pages
         publish_dir: ./diff/
-        destination_dir: pr-${{ github.event.pull_request.number }}
+        destination_dir: /
 
