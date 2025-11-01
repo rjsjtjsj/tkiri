@@ -10,9 +10,11 @@ on:
     types:
     - closed
 
+
 jobs:
   kiri-delete:
     runs-on: ubuntu-latest
     steps:
     - name: Kiri
       uses: usa-reddragon/kiri-github-action@v2
+
