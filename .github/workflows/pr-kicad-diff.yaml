@@ -3,6 +3,9 @@ name: KiCad Pull Request Diff
 
 permissions:
   contents: write
+  actions: write
+  packages: write
+  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,7 +13,6 @@ concurrency:
 
 on:
   pull_request:
-    branches: [ kiri ]
     types:
     - opened
     - synchronize
@@ -18,15 +20,27 @@ on:
 jobs:
   kiri-diff:
     runs-on: ubuntu-latest
+    container:
+      options: --user root
+    timeout-minutes: 10
     steps:
+  
+    #- name: Clean up space
+    #  run: |
+    #    sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache
+    #    sudo apt clean
+    #    df -h
+        
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+
 
     - name: Setup KiCad
       run: |
         sudo apt update
         sudo apt install -y kicad
+        sudo su
 
     - name: Create diff folder
       run: mkdir -p ./diff/
@@ -34,15 +48,20 @@ jobs:
       run: |
         mkdir -p ./diff
         echo "<html><body>test</body></html>" > ./diff/index.html
-        
+
+    - name: Check KiCad project exists
+      run: |
+        echo "Checking project file path..."
+        ls -l projekt1/new.kicad_pro || echo "File not found!"
+      
     - name: Kiri
       uses: hacker-fab/kiri-github-action@v2.0.5
       with:
-        project-file: /projekt1
+        project-file: projekt1/new.kicad_pro
         output-dir: ./diff/
         kiri-debug: true
-        extra-args: --exclude "/etc" --exclude "/dev" --exclude "/boot" --exclude "/home" --exclude "/mnt" --exclude "/lost+found"
-
+        extra-args: --exclude "/etc" --exclude "/dev" --exclude "/boot" --exclude "/home" --exclude "/mnt" --exclude "/proc" --exclude "/lost+found"
+      
     - name: Upload KiCad diff results (for debugging)
       uses: actions/upload-artifact@v4
       with:
@@ -58,8 +77,7 @@ jobs:
     - name: Copy diff output to PR folder
       run: |
         mkdir -p gh-pages/pr-previews/${{ github.event.pull_request.number }}
-        cp -r ./diff/* gh-pages/pr-previews/${{ github.event.pull_request.number }}/
-
+        rsync -av --delete ./diff/ gh-pages/pr-previews/${{ github.event.pull_request.number }}/
 
     - name: Deploy diff to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
@@ -67,6 +85,4 @@ jobs:
         github_token: ${{ secrets.GH_PAT }}
         publish_branch: gh-pages
         publish_dir: ./diff/
-
-
-
+        
