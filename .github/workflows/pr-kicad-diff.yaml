@@ -22,11 +22,11 @@ jobs:
     timeout-minutes: 10
     steps:
   
-    - name: Clean up space
-      run: |
-        sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache
-        sudo apt clean
-        df -h
+    #- name: Clean up space
+    #  run: |
+    #    sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache
+    #    sudo apt clean
+    #    df -h
         
     - uses: actions/checkout@v4
       with:
