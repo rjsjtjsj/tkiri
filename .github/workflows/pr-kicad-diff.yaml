@@ -3,6 +3,8 @@ name: KiCad Pull Request Diff
 
 permissions:
   contents: write
+  actions: write
+  packages: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,7 +12,6 @@ concurrency:
 
 on:
   pull_request:
-    branches: [ kiri ]
     types:
     - opened
     - synchronize
@@ -39,15 +40,15 @@ jobs:
     - name: Check KiCad project exists
       run: |
         echo "Checking project file path..."
-        ls -l /github/workspace/projekt1/new.kicad_pro || echo "File not found!"
+        ls -l projekt1/new.kicad_pro || echo "File not found!"
       
     - name: Kiri
       uses: hacker-fab/kiri-github-action@v2.0.5
       with:
-        project-file: /github/workspace/projekt1/new.kicad_pro
+        project-file: projekt1/new.kicad_pro
         output-dir: ./diff/
         kiri-debug: true
-        extra-args: --exclude "/etc" --exclude "/dev" --exclude "/boot" --exclude "/home" --exclude "/mnt" --exclude "/lost+found"
+        extra-args: --exclude "/etc" --exclude "/dev" --exclude "/boot" --exclude "/home" --exclude "/mnt" --exclude "/proc" --exclude "/lost+found"
         
     - name: Upload KiCad diff results (for debugging)
       uses: actions/upload-artifact@v4
