@@ -21,9 +21,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+  
+    - name: Clean up space
+      run: |
+        sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache
+        sudo apt clean
+        df -h
+        
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+
 
     - name: Setup KiCad
       run: |
@@ -65,8 +73,7 @@ jobs:
     - name: Copy diff output to PR folder
       run: |
         mkdir -p gh-pages/pr-previews/${{ github.event.pull_request.number }}
-        cp -r ./diff/* gh-pages/pr-previews/${{ github.event.pull_request.number }}/
-
+        rsync -av --delete ./diff/ gh-pages/pr-previews/${{ github.event.pull_request.number }}/
 
     - name: Deploy diff to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
