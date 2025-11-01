@@ -55,6 +55,11 @@ jobs:
         echo "Listing ./diff/ directory..."
         ls -R ./diff/
 
+    - name: Copy diff output to PR folder
+      run: |
+        mkdir -p gh-pages/pr-previews/${{ github.event.pull_request.number }}
+        cp -r ./diff/* gh-pages/pr-previews/${{ github.event.pull_request.number }}/
+
 
     - name: Deploy diff to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
