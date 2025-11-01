@@ -21,6 +21,9 @@ jobs:
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+
+    - name: Create diff folder
+      run: mkdir -p ./diff
         
     - name: Kiri
       uses: hacker-fab/kiri-github-action@v2.0.5
@@ -30,7 +33,7 @@ jobs:
     - name: Check diff directory
       run: |
         echo "Listing ./diff/ directory..."
-        ls -R ./_KIRI_/
+        ls -R ./diff/
 
 
     - name: Deploy diff to GitHub Pages
@@ -38,6 +41,6 @@ jobs:
       with:
         github_token: ${{ secrets.GH_PAT }}
         publish_branch: gh-pages
-        publish_dir: ./_KIRI_/
+        publish_dir: ./diff/
         destination_dir: pr-${{ github.event.pull_request.number }}
 
