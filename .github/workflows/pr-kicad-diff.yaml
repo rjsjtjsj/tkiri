@@ -35,7 +35,7 @@ jobs:
         project-file: kicad/productname.kicad_pro
         output-dir: ./diff/
         kiri-debug: true
-        extra-args: --exclude "/etc" --exclude "/home" --exclude "/lost+found" --exclude "/mnt"
+        extra-args: --exclude "/etc" --exclude "/dev" --exclude "/boot" --exclude "/home" --exclude "/mnt" --exclude "/lost+found"
 
     - name: Upload KiCad diff results (for debugging)
       uses: actions/upload-artifact@v4
