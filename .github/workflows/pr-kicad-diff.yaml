@@ -18,10 +18,13 @@ jobs:
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+        
     - name: Kiri
       uses: hacker-fab/kiri-github-action@v2.0.5
       with:
         project-file: kicad/productname.kicad_pro
+        output-dir: ./kiri-diff/
+        
     - name: Upload KiCad diff results
       uses: actions/upload-artifact@v4
       with:
