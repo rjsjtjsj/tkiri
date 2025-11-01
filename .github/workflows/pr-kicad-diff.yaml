@@ -8,12 +8,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+
 on:
   pull_request:
     branches: [ kiri]
     types:
     - opened
     - synchronize
+
 
 jobs:
   kiri-diff:
@@ -30,10 +32,13 @@ jobs:
 
     - name: Create diff folder
       run: mkdir -p ./diff/
+
+      
     - name: Create dummy file
       run: |
         mkdir -p ./diff
         echo "<html><body>test</body></html>" > ./diff/index.html
+
         
     - name: Kiri
       uses: hacker-fab/kiri-github-action@v2.0.5
@@ -42,6 +47,7 @@ jobs:
         output-dir: ./diff/
         kiri-debug: true
         extra-args: --exclude "/etc" --exclude "/dev" --exclude "/boot" --exclude "/home" --exclude "/mnt" --exclude "/lost+found"
+
 
     - name: Upload KiCad diff results (for debugging)
       uses: actions/upload-artifact@v4
@@ -62,6 +68,3 @@ jobs:
         github_token: ${{ secrets.GH_PAT }}
         publish_branch: gh-pages
         publish_dir: ./diff/
-
-
-
