@@ -41,8 +41,8 @@ jobs:
         project-file: /projekt1
         output-dir: ./diff/
         kiri-debug: true
-        extra-args: "--skip-cache"
-
+        extra-args: --exclude "/etc" --exclude "/dev" --exclude "/boot" --exclude "/home" --exclude "/mnt" --exclude "/lost+found"
+        
     - name: Upload KiCad diff results (for debugging)
       uses: actions/upload-artifact@v4
       with:
